@@ -8,8 +8,8 @@
 #define ER2 4
 
 /* screen ( integer) coordinate */
-#define iXmax 2048
-#define iYmax 2048
+#define iXmax 4096
+#define iYmax 4096
 /* world ( double) coordinate = parameter plane*/
 #define CxMin -2.5
 #define CxMax 1.5
@@ -20,13 +20,13 @@
 #define PixelHeight (CyMax-CyMin)/iYmax
 
 /* number fo streams*/
-#define nstreams 4
+#define nstreams 2
 
 /* loop counter*/
-#define LOOP 1
+#define LOOP 2
 #define iXL iXmax/LOOP
 
-__global__ void mandelbrot(int j,int n, unsigned int *grid)
+__global__ void mandelbrot(int j, unsigned int *grid)
 //Determines the mandelbrot set over a given plane
 {
 	unsigned int ix = blockIdx.x * blockDim.x + threadIdx.x;
@@ -109,7 +109,7 @@ int main(int argc, char*argv[] )
     for (j=0; j< nstreams; j++)
     {
         int offset = (n/nstreams)*j;
-	    mandelbrot<<<grid,block,0,stream[j]>>>(j, n, &d_x[offset]);
+	    mandelbrot<<<grid,block,0,stream[j]>>>(j, &d_x[offset]);
         cudaMemcpyAsync(&h_x[offset], &d_x[offset], bytesPerStream, cudaMemcpyDeviceToHost, stream[j]);
     }
     for (j=0; j< nstreams; j++)

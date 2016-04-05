@@ -8,8 +8,8 @@
 #define ER2 4
 
 /* screen ( integer) coordinate */
-#define iXmax 2048 
-#define iYmax 2048
+#define iXmax 4096
+#define iYmax 4096
 /* world ( double) coordinate = parameter plane*/
 #define CxMin -2.5
 #define CxMax 1.5
